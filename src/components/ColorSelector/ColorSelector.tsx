@@ -17,14 +17,14 @@ const Legend = styled.legend`
 
 const Swatches = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 `;
 
 const SwatchButton = styled.button<{ $selected: boolean; $color: string }>`
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
   padding: 0;
   background: ${({ $color }) => $color};
   border: 1px solid ${({ theme }) => theme.colors.border};

@@ -12,9 +12,12 @@ type RawProductSummary = {
 type RawColor = { name: string; hexCode: string; imageUrl: string };
 type RawStorage = { capacity: string; price: number | string };
 
+type RawSpecs = Record<string, unknown>;
+
 type RawProductDetail = RawProductSummary & {
   description?: string;
   rating?: number;
+  specs?: RawSpecs | null;
   colorOptions?: RawColor[] | null;
   storageOptions?: RawStorage[] | null;
   similarProducts?: RawProductSummary[] | null;
@@ -62,8 +65,10 @@ const SPEC_KEYS: Array<keyof RawProductDetail> = [
 
 const normalizeDetail = (raw: RawProductDetail): ProductDetail => {
   const specs: Record<string, string> = {};
+  const specsSource: RawSpecs =
+    raw.specs && typeof raw.specs === 'object' ? raw.specs : (raw as RawSpecs);
   for (const key of SPEC_KEYS) {
-    const value = raw[key];
+    const value = specsSource[key as string];
     if (typeof value === 'string' && value.length > 0) {
       specs[key as string] = value;
     }

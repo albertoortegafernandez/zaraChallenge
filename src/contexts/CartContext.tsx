@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import type { CartItem } from '@/types';
 import { CartContext, type AddToCartInput, type CartContextValue } from './cart-context';
 
@@ -7,14 +7,14 @@ const STORAGE_KEY = 'zara-mobile-cart:v1';
 type CartState = { items: CartItem[] };
 
 type CartAction =
-  | { type: 'HYDRATE'; items: CartItem[] }
+  | { type: 'SET'; items: CartItem[] }
   | { type: 'ADD'; item: CartItem }
   | { type: 'REMOVE'; lineId: string }
   | { type: 'CLEAR' };
 
 const reducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
-    case 'HYDRATE':
+    case 'SET':
       return { items: action.items };
     case 'ADD':
       return { items: [...state.items, action.item] };
@@ -45,21 +45,39 @@ const readFromStorage = (): CartItem[] => {
   }
 };
 
+const writeToStorage = (items: CartItem[]) => {
+  if (!isBrowser) return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  } catch {
+    /* storage unavailable (quota, private mode) */
+  }
+};
+
+const initializer = (): CartState => ({ items: readFromStorage() });
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, { items: [] });
+  const [state, dispatch] = useReducer(reducer, undefined, initializer);
+  const didMount = useRef(false);
 
   useEffect(() => {
-    dispatch({ type: 'HYDRATE', items: readFromStorage() });
-  }, []);
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    writeToStorage(state.items);
+  }, [state.items]);
 
   useEffect(() => {
     if (!isBrowser) return;
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
-    } catch {
-      /* storage unavailable */
-    }
-  }, [state.items]);
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== STORAGE_KEY) return;
+      const next = readFromStorage();
+      dispatch({ type: 'SET', items: next });
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   const addItem = useCallback((input: AddToCartInput) => {
     dispatch({ type: 'ADD', item: { ...input, lineId: makeLineId() } });

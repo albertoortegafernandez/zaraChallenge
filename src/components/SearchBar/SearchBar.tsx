@@ -2,10 +2,15 @@ import styled from 'styled-components';
 import type { ChangeEvent } from 'react';
 
 const Wrapper = styled.div`
+  position: sticky;
+  top: ${({ theme }) => theme.sizes.navbarHeight};
+  z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 32px;
+  padding: 16px 0;
+  margin: -16px 0 16px;
+  background: ${({ theme }) => theme.colors.bg};
 `;
 
 const InputRow = styled.div`

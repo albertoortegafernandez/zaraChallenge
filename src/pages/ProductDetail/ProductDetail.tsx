@@ -97,12 +97,6 @@ const Price = styled.p`
   font-weight: 600;
 `;
 
-const Description = styled.p`
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: ${({ theme }) => theme.colors.textMuted};
-`;
 
 const AddButton = styled.button`
   padding: 16px 24px;
@@ -196,7 +190,7 @@ const ProductDetail = () => {
     <article>
       <BackLink to="/" aria-label="Volver al catálogo">
         <BackArrow />
-        Back
+        Volver
       </BackLink>
       <Layout>
         <ImageBox>
@@ -214,7 +208,6 @@ const ProductDetail = () => {
           <Price aria-label={`Precio ${formatPrice(currentPrice)}`}>
             {formatPrice(currentPrice)}
           </Price>
-          {data.description && <Description>{data.description}</Description>}
           <StorageSelector
             options={data.storageOptions}
             selected={storage}

@@ -14,26 +14,13 @@ const Main = styled.main`
   }
 `;
 
-const Footer = styled.footer`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 20px 24px;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.textMuted};
-  text-align: center;
-`;
-
-const Layout = () => {
-  return (
-    <>
-      <Navbar />
-      <Main>
-        <Outlet />
-      </Main>
-      <Footer>Mobile Shop — {new Date().getFullYear()}</Footer>
-    </>
-  );
-};
+const Layout = () => (
+  <>
+    <Navbar />
+    <Main>
+      <Outlet />
+    </Main>
+  </>
+);
 
 export default Layout;

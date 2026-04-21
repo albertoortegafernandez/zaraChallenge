@@ -18,11 +18,12 @@ const Legend = styled.legend`
 const List = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0;
 `;
 
 const Option = styled.button<{ $selected: boolean }>`
-  padding: 10px 18px;
+  min-width: 96px;
+  padding: 14px 20px;
   font-size: 13px;
   letter-spacing: 0.08em;
   border: 1px solid
@@ -32,11 +33,24 @@ const Option = styled.button<{ $selected: boolean }>`
   cursor: pointer;
   transition:
     background ${({ theme }) => theme.transitions.base},
-    color ${({ theme }) => theme.transitions.base};
+    color ${({ theme }) => theme.transitions.base},
+    border-color ${({ theme }) => theme.transitions.base};
+
+  & + & {
+    margin-left: -1px;
+  }
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.text};
+    z-index: 1;
   }
+
+  ${({ $selected }) =>
+    $selected &&
+    `
+    position: relative;
+    z-index: 1;
+  `}
 `;
 
 interface Props {

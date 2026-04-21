@@ -15,18 +15,41 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const Grid = styled.div`
+const Scroller = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0 0 20px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(200px, 1fr);
   gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  scrollbar-width: thin;
+  scrollbar-color: ${({ theme }) => theme.colors.text} ${({ theme }) => theme.colors.border};
+
+  &::-webkit-scrollbar {
+    height: 3px;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  &::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.colors.border};
   }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.text};
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    grid-auto-columns: minmax(220px, 1fr);
+  }
+`;
+
+const Item = styled.li`
+  scroll-snap-align: start;
+  min-width: 0;
 `;
 
 interface Props {
@@ -38,13 +61,13 @@ const SimilarProducts = ({ products }: Props) => {
   return (
     <Section aria-labelledby="similar-title">
       <Title id="similar-title">Productos similares</Title>
-      <Grid role="list">
-        {products.slice(0, 4).map((p) => (
-          <div role="listitem" key={p.id}>
+      <Scroller aria-label="Productos similares">
+        {products.map((p) => (
+          <Item key={p.id}>
             <ProductCard product={p} />
-          </div>
+          </Item>
         ))}
-      </Grid>
+      </Scroller>
     </Section>
   );
 };
