@@ -24,6 +24,9 @@ type RawProductDetail = RawProductSummary & {
   [key: string]: unknown;
 };
 
+const toHttps = (url: string): string =>
+  url.startsWith('http://') ? url.replace('http://', 'https://') : url;
+
 const toNumber = (value: number | string | undefined, fallback = 0): number => {
   if (typeof value === 'number') return value;
   if (typeof value === 'string') {
@@ -38,7 +41,7 @@ const normalizeSummary = (raw: RawProductSummary): ProductSummary => ({
   brand: raw.brand ?? '',
   name: raw.name ?? '',
   basePrice: toNumber(raw.basePrice),
-  imageUrl: raw.imageUrl ?? '',
+  imageUrl: toHttps(raw.imageUrl ?? ''),
 });
 
 export const dedupeById = (items: ProductSummary[]): ProductSummary[] => {
@@ -79,7 +82,9 @@ const normalizeDetail = (raw: RawProductDetail): ProductDetail => {
     description: typeof raw.description === 'string' ? raw.description : undefined,
     rating: typeof raw.rating === 'number' ? raw.rating : undefined,
     specs,
-    colorOptions: Array.isArray(raw.colorOptions) ? raw.colorOptions : [],
+    colorOptions: Array.isArray(raw.colorOptions)
+      ? raw.colorOptions.map((c) => ({ ...c, imageUrl: toHttps(c.imageUrl ?? '') }))
+      : [],
     storageOptions: Array.isArray(raw.storageOptions)
       ? raw.storageOptions.map((s) => ({ capacity: s.capacity, price: toNumber(s.price) }))
       : [],
