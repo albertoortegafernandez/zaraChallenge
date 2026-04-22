@@ -3,20 +3,15 @@ import type { ProductSpecs } from '@/types';
 
 const List = styled.dl`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 32px;
+  grid-template-columns: 1fr;
+  gap: 0;
   margin: 0;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
 `;
 
 const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 10px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 14px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
@@ -30,10 +25,13 @@ const Term = styled.dt`
 const Value = styled.dd`
   margin: 0;
   font-size: 13px;
-  text-align: right;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const SPEC_LABELS: Record<string, string> = {
+  brand: 'Marca',
+  name: 'Nombre',
+  description: 'Descripción',
   screen: 'Pantalla',
   resolution: 'Resolución',
   processor: 'Procesador',

@@ -12,7 +12,6 @@ const Title = styled.h2`
   letter-spacing: 0.2em;
   font-weight: 600;
   margin: 0 0 24px;
-  text-align: center;
 `;
 
 const Scroller = styled.ul`
@@ -22,10 +21,12 @@ const Scroller = styled.ul`
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(200px, 1fr);
-  gap: 24px;
+  gap: 0;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x proximity;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  border-left: 1px solid ${({ theme }) => theme.colors.border};
 
   scrollbar-width: thin;
   scrollbar-color: ${({ theme }) => theme.colors.text} ${({ theme }) => theme.colors.border};
@@ -50,6 +51,9 @@ const Scroller = styled.ul`
 const Item = styled.li`
   scroll-snap-align: start;
   min-width: 0;
+  display: flex;
+  border-right: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 interface Props {

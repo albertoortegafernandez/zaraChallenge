@@ -85,19 +85,28 @@ const Brand = styled.span`
   letter-spacing: 0.2em;
 `;
 
+const NameRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+`;
+
 const Name = styled.h3`
   margin: 0;
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: currentColor;
 `;
 
 const Price = styled.span`
   font-size: 14px;
-  font-weight: 600;
-  margin-top: 6px;
+  font-weight: 400;
   color: currentColor;
+  white-space: nowrap;
+  flex-shrink: 0;
 `;
 
 const Fallback = styled.div`
@@ -122,8 +131,10 @@ const ProductCard = ({ product }: Props) => {
       </ImageBox>
       <Meta>
         <Brand>{product.brand}</Brand>
-        <Name>{product.name}</Name>
-        <Price>{formatPrice(product.basePrice)}</Price>
+        <NameRow>
+          <Name>{product.name}</Name>
+          <Price>{formatPrice(product.basePrice)}</Price>
+        </NameRow>
       </Meta>
     </Card>
   );

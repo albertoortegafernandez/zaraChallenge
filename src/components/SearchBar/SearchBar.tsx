@@ -16,7 +16,6 @@ const Wrapper = styled.div`
 const InputRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
   width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.colors.text};
   padding: 10px 0;
@@ -30,15 +29,15 @@ const SearchInput = styled.input`
   padding: 4px 0;
   font-size: 16px;
   font-weight: 300;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: ${({ theme }) => theme.colors.text};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.textMuted};
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    text-transform: none;
+    letter-spacing: 0.05em;
     font-weight: 300;
+    opacity: 0.6;
   }
 `;
 
@@ -48,23 +47,6 @@ const Count = styled.span`
   letter-spacing: 0.2em;
   color: ${({ theme }) => theme.colors.textMuted};
 `;
-
-const SearchIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.4"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <circle cx="11" cy="11" r="7" />
-    <path d="m20 20-3.5-3.5" />
-  </svg>
-);
 
 interface Props {
   value: string;
@@ -79,7 +61,6 @@ const SearchBar = ({ value, onChange, resultsCount, isFetching }: Props) => {
   return (
     <Wrapper>
       <InputRow>
-        <SearchIcon />
         <SearchInput
           type="search"
           placeholder="Buscar un teléfono…"

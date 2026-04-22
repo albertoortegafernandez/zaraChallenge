@@ -227,7 +227,14 @@ const ProductDetail = () => {
 
       <SpecsSection aria-labelledby="specs-title">
         <SpecsTitle id="specs-title">Especificaciones</SpecsTitle>
-        <SpecsList specs={data.specs} />
+        <SpecsList
+          specs={{
+            brand: data.brand,
+            name: data.name,
+            ...(data.description ? { description: data.description } : {}),
+            ...data.specs,
+          }}
+        />
       </SpecsSection>
 
       <SimilarProducts products={data.similarProducts} />
